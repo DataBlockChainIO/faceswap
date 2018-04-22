@@ -3,6 +3,7 @@ import sys
 from lib.cli import FullHelpArgumentParser
 # Importing the various tools
 from tools.sort import SortProcessor
+from tools.effmpeg import Effmpeg
 from scripts.gui import TKGui
 
 # Python version check
@@ -25,13 +26,16 @@ if __name__ == "__main__":
 
     parser = FullHelpArgumentParser()
     subparser = parser.add_subparsers()
+    effmpeg = Effmpeg(
+            subparser, "effmpeg",
+            "This command allows you to easily execute common ffmpeg tasks.")
     sort = SortProcessor(
-        subparser, "sort", "This command lets you sort images using various "
-                           "methods.")
-    guiparsers = {'sort': sort}
-    print(__file__)
+            subparser, "sort",
+            "This command lets you sort images using various methods.")
+    guiparsers = {'effmpeg': effmpeg, 'sort': sort}
     gui = TKGui(
-            subparser, guiparsers, "gui", "Launch the Faceswap Tools Graphical User Interface.")
+            subparser, guiparsers, "gui",
+            "Launch the Faceswap Tools Graphical User Interface.")
     parser.set_defaults(func=bad_args)
     arguments = parser.parse_args()
     arguments.func(arguments)
